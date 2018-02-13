@@ -84,16 +84,17 @@ end
 
 p "Welcome to Tic Tac Toe Mania!"
 p "Would like to play? Please input 'yes' or 'no'"
-unless answer == "yes" || answer == "no"
-	if false 
-		p "please only input 'yes' or 'no'"
-	end 
+answer = ""
+until answer == "yes" || answer == "no"
 	answer = gets.chomp.downcase 
+	if answer != "yes" || answer == "no"
+ 		p "please only input 'yes' or 'no'"
+	end 
 end 
 
 while answer != "no"
 	p "Let us begin!"
-	sleep(5)
+	sleep(3)
 	@game = TicTacToe.new 
 	@game.display
 	until @game.verify == "Player 1 has won" || @game.verify == "Player 2 has won" || @game.verify == "It's a Draw! Good game."
@@ -132,11 +133,12 @@ while answer != "no"
 	end 
 	p "Would you like to play another round of Tic Tac Toe?"
 	p "Would like to play? Please input 'yes' or 'no'"
-	unless answer == "yes" || answer == "no"
-		if false 
-			p "please only input 'yes' or 'no'"
-		end 
+	answer = ""
+	until answer == "yes" || answer == "no"
 		answer = gets.chomp.downcase 
+		if answer != "yes" || answer == "no"
+ 			p "please only input 'yes' or 'no'"
+		end 
 	end 
 end 
 
