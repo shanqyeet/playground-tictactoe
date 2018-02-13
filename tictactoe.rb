@@ -10,7 +10,7 @@ class TicTacToe
 	end 
 	
 	def touch(num)
-		if check_turn == "Its Player 1's turn"
+		if check_turn == "It's Player 1's turn"
 			board[num-1] = "O"
 			@player1 << "O"
 		else 
@@ -56,11 +56,11 @@ class TicTacToe
 		a = @player1.count 
 		b = @player2.count 
 		if b > a 
-			@turn = "Its Player 1's turn"
+			@turn = "It's Player 1's turn"
 		elsif a > b 
-			@turn = "Its Player 2's turn"
+			@turn = "It's Player 2's turn"
 		else 
-			@turn ="Its Player 1's turn"
+			@turn ="It's Player 1's turn"
 		end 
 		return @turn
 	end 
@@ -82,18 +82,18 @@ end
 
 # Tic Tac Toe Time~! Woohooo~ 
 
-p "Welcome to Tic Tac Toe Mania!"
-p "Would like to play? Please input 'yes' or 'no'"
+print "> Welcome to Tic Tac Toe Mania!\n"
+print  "> Would you like to play a game? Please input 'yes' or 'no'\n"
 answer = ""
 until answer == "yes" || answer == "no"
 	answer = gets.chomp.downcase 
 	if answer != "yes" || answer == "no"
- 		p "please only input 'yes' or 'no'"
+ 		print "> please only input 'yes' or 'no'\n"
 	end 
 end 
 
 while answer != "no"
-	p "Let us begin!"
+	print "Let us begin!\n"
 	sleep(3)
 	@game = TicTacToe.new 
 	@game.display
@@ -101,11 +101,11 @@ while answer != "no"
 		if @game.player1.count == 0
 			@num = nil
 			until (1..9).include? @num do 
-				p "> " + @game.check_turn 
-				p "> Please input number between 1 - 9"
+				print "> " + @game.check_turn + "\n"
+				print "> Please input number between 1 - 9\n"
 				@num = gets.chomp.to_i 
 				if @num < 1 || @num > 9 
-					p "> Sorry, the input provided is not within the permitted range, please try again."
+					print "> Sorry, the input provided is not within the permitted range, please try again\n"
 				end
 			end 
 			p "> you chose slot no. #{@num}"
@@ -113,17 +113,17 @@ while answer != "no"
 			while @game.check_overlap(@num) == true 
 				@num = nil
 				until (1..9).include? @num do 
-					p "> " +  @game.check_turn 
-					p "> Please input number between 1 - 9"
+					print "> " +  @game.check_turn + "\n"
+					print "> Please input number between 1 - 9\n"
 					@num = gets.chomp.to_i 
 					if @num < 1 || @num > 9 
-						p "> Sorry, the input provided is not within the permitted range, please try again."
+						print "> Sorry, the input provided is not within the permitted range, please try again\n"
 					end
 				end 
-				p "> you chose slot no. #{@num}"
+				print "> you chose slot no. #{@num}\n"
 				@game.check_overlap(@num)
 				if @game.check_overlap(@num) == true
-					p "> Slot no. #{@num} has been taken, please choose again"
+					print "> Slot no. #{@num} was taken, please choose again\n"
 				end 
 			end 
 		end 
@@ -131,15 +131,15 @@ while answer != "no"
 		@game.display
 		p @game.verify
 	end 
-	p "Would you like to play another round of Tic Tac Toe?"
-	p "Would like to play? Please input 'yes' or 'no'"
+	print "> Would you like to play another round of Tic Tac Toe?\n"
+	print "> Would like to play? Please input 'yes' or 'no'\n"
 	answer = ""
 	until answer == "yes" || answer == "no"
 		answer = gets.chomp.downcase 
 		if answer != "yes" || answer == "no"
- 			p "please only input 'yes' or 'no'"
+ 			print "> please only input 'yes' or 'no'\n"
 		end 
 	end 
 end 
 
-p "Thank you for playing, hope you enjoyed the game :)"
+print "> Thank you for playing, hope you enjoyed the game :)\n"
