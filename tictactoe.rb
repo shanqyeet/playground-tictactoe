@@ -32,22 +32,21 @@ class TicTacToe
 		check7 = [board[0],board[4],board[8]]
 		check8 = [board[2],board[4],board[6]]
 		all = [check1, check2, check3, check4, check5, check6, check7, check8]
-		result = false
-		@statement = "" 
-
+	
 		all.each do |a|
 			if a == circle 
-				result = true
 				@statement = "Player 1 has won"
 				break
 			elsif a == cross 
-				result = true
 				@statement = "Player 2 has won" 
 				break
 			else 
-				result = true
-				@statement = "The game continues, next move please!"
-			end 
+				if board.include?("-")
+					@statement = "The game continues, next move please!"
+				else
+					@statement = "It's a Draw! Good game."
+				end 
+			end
 		end
 		return @statement
 	end 
@@ -83,27 +82,62 @@ end
 
 # Tic Tac Toe Time~! Woohooo~ 
 
-@game = TicTacToe.new 
-@game.display
-until @game.verify == "Player 1 has won" || @game.verify == "Player 2 has won"
-	if @game.player1.count == 0
-		p @game.check_turn 
-		p "Please input number between 1 - 9"
-		@num = gets.chomp.to_i 
-		p "you chose slot no. #{@num}"
-	else 
-		while @game.check_overlap(@num) == true 
-			p @game.check_turn 
-			p "Please input number between 1 - 9"	
-			@num = gets.chomp.to_i 
-			p "you chose slot no. #{@num}"
-			@game.check_overlap(@num)
-			if @game.check_overlap(@num) == true
-				p "Slot no. #{@num} has been taken, please choose again"
+p "Welcome to Tic Tac Toe Mania!"
+p "Would like to play? Please input 'yes' or 'no'"
+unless answer == "yes" || answer == "no"
+	if false 
+		p "please only input 'yes' or 'no'"
+	end 
+	answer = gets.chomp.downcase 
+end 
+
+while answer != "no"
+	p "Let us begin!"
+	sleep(5)
+	@game = TicTacToe.new 
+	@game.display
+	until @game.verify == "Player 1 has won" || @game.verify == "Player 2 has won" || @game.verify == "It's a Draw! Good game."
+		if @game.player1.count == 0
+			@num = nil
+			until (1..9).include? @num do 
+				p "> " + @game.check_turn 
+				p "> Please input number between 1 - 9"
+				@num = gets.chomp.to_i 
+				if @num < 1 || @num > 9 
+					p "> Sorry, the input provided is not within the permitted range, please try again."
+				end
+			end 
+			p "> you chose slot no. #{@num}"
+		else 
+			while @game.check_overlap(@num) == true 
+				@num = nil
+				until (1..9).include? @num do 
+					p "> " +  @game.check_turn 
+					p "> Please input number between 1 - 9"
+					@num = gets.chomp.to_i 
+					if @num < 1 || @num > 9 
+						p "> Sorry, the input provided is not within the permitted range, please try again."
+					end
+				end 
+				p "> you chose slot no. #{@num}"
+				@game.check_overlap(@num)
+				if @game.check_overlap(@num) == true
+					p "> Slot no. #{@num} has been taken, please choose again"
+				end 
 			end 
 		end 
+		@game.touch(@num)
+		@game.display
+		p @game.verify
 	end 
-	@game.touch(@num)
-	@game.display
-	p @game.verify
+	p "Would you like to play another round of Tic Tac Toe?"
+	p "Would like to play? Please input 'yes' or 'no'"
+	unless answer == "yes" || answer == "no"
+		if false 
+			p "please only input 'yes' or 'no'"
+		end 
+		answer = gets.chomp.downcase 
+	end 
 end 
+
+p "Thank you for playing, hope you enjoyed the game :)"
