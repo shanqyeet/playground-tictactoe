@@ -1,12 +1,14 @@
 class TicTacToe
-	attr_accessor :board
-	attr_reader :player1, :player2
+	attr_accessor :board, :size
+	attr_reader :player1, :player2, :multi
 	
-	def initialize 
-		@board = ["-","-","-","-","-","-","-","-","-"]
+	def initialize(size)
+		@size = size.to_i
+		@multi = @size*@size
+		@board = ("-"*@multi).split('')
 		@player1 = []
 		@player2 = []
-		puts "> ATTN: select 1 - 9 to input your symbol with first row starting from 1, 2, 3, followed by second row 4, 5, 6 and finally 7, 8 9 for the last row at the bottom"
+		puts "> ATTN: select 1 - #{@multi} to input your symbol with first row starting from 1, 2, 3, followed by second row 4, 5, 6 and finally 7, 8 9 for the last row at the bottom"
 	end 
 	
 	def touch(num)
@@ -19,20 +21,28 @@ class TicTacToe
 		end  
 	end 
 
-	def verify 
-		circle = ["O","O","O"]
-		cross = ["X","X","X"]
+	def verify
+		circle = ("O"*@size).split('')
+		cross = ("X"*@size).split('')
 
-		check1 = [board[0],board[1],board[2]]
-		check2 = [board[3],board[4],board[5]]
-		check3 = [board[6],board[7],board[8]]
-		check4 = [board[0],board[3],board[6]]
-		check5 = [board[1],board[4],board[7]]
-		check6 = [board[2],board[5],board[8]]
-		check7 = [board[0],board[4],board[8]]
-		check8 = [board[2],board[4],board[6]]
-		all = [check1, check2, check3, check4, check5, check6, check7, check8]
-	
+		row = board.each_slice(@size).to_a 
+		col = row.transpose
+		all = row + col
+		n = 0 
+		forw = [] 
+			row.map do |x|
+				forw << x[n] 
+				n += 1 
+			end 
+		all << forw
+		n = @size - 1 	
+		back = [] 
+			row.map do |x|
+				back << x[n]
+				n -= 1 
+			end 
+		all << back
+
 		all.each do |a|
 			if a == circle 
 				@statement = "Player 1 has won"
@@ -71,11 +81,11 @@ class TicTacToe
 	end 
 
 	def display 
-		show = board.each_slice(3).to_a
-		p "-"*13
+		show = board.each_slice(@size).to_a
+		p "-"*@size*4
 		show.each do |x| 
 			p "| " + x.join(" | ") + " |" 
-			p "-"*13
+			p "-"*@size*4
 		end
 	end 
 end 
@@ -93,18 +103,21 @@ until answer == "yes" || answer == "no"
 end 
 
 while answer != "no"
-	print "Let us begin!\n"
-	sleep(3)
-	@game = TicTacToe.new 
+	print "> What board size would you like to play? note: It must be more than 1 and is odd number\n"
+	size = gets.chomp
+	print "> You chose a #{size}x#{size} board\n"
+	print "> Let us begin!\n"
+	sleep(1.5)
+	@game = TicTacToe.new(size)
 	@game.display
 	until @game.verify == "Player 1 has won" || @game.verify == "Player 2 has won" || @game.verify == "It's a Draw! Good game."
 		if @game.player1.count == 0
 			@num = nil
-			until (1..9).include? @num do 
+			until (1..@game.multi).include? @num do 
 				print "> " + @game.check_turn + "\n"
-				print "> Please input number between 1 - 9\n"
+				print "> Please input number between 1 - #{@game.multi}\n"
 				@num = gets.chomp.to_i 
-				if @num < 1 || @num > 9 
+				if @num < 1 || @num > @game.multi 
 					print "> Sorry, the input provided is not within the permitted range, please try again\n"
 				end
 			end 
@@ -112,11 +125,11 @@ while answer != "no"
 		else 
 			while @game.check_overlap(@num) == true 
 				@num = nil
-				until (1..9).include? @num do 
+				until (1..@game.multi).include? @num do 
 					print "> " +  @game.check_turn + "\n"
-					print "> Please input number between 1 - 9\n"
+					print "> Please input number between 1 - #{@game.multi}\n"
 					@num = gets.chomp.to_i 
-					if @num < 1 || @num > 9 
+					if @num < 1 || @num > @game.multi 
 						print "> Sorry, the input provided is not within the permitted range, please try again\n"
 					end
 				end 
